@@ -40,11 +40,26 @@ readinessProbe:
     initialDelaySeconds: 3
     periodSeconds: 3
 ```
+4. ~~Create application k8 manifests, using Kustomize to build the k8 objects.~~
+    - ~~deployment.yaml~~
+    - ~~service.yaml~~
+    - ~~ingress.yaml~~
+    - ~~hpa.yaml~~
+    - ~~argocd-application-sample-app.yaml~~
+5. ~~Create ArgoCD application structure: application file~~
+6. ~~Create DockerHub repo~~
+7. Run K8 manifests locally with Minikube
+8. Configure github actions file
+9. Configure ArgoCD server locally, validate the cicd flow
+10. Create VPC structure
+11. Create EKS cluster: With addons kube-proxy, coredns, vpc cni, ebs csi, *external secrets
+12. Configure ALB ingress controller
+13. Prometheus + Grafana
+14. ArgoCD
+15. *Linkerd2, Linkerd2Viz
+16. *Karpenter: Nodes scaling
+17. HPA with latency and rps metrics
 
-4. Create application k8 manifests, using Kustomize to build the k8 objects.
-    - deployment.yaml
-    - service.yaml
-    - ingress.yaml
-    - hpa.yaml
-    - argocd-application-sample-app.yaml
-
+```sh
+* nice to have
+```
