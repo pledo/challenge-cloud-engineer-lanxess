@@ -11,7 +11,7 @@ resources:
 
 labels:
   - pairs:
-      app: sample-app
+      app: springboot-sample
 
 images:
 - name: pledo/springboot-sample

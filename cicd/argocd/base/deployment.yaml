@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-app
+  name: springboot-sample
   labels:
-    app: sample-app
+    app: springboot-sample
 spec:
   selector:
     matchLabels:
-      app: sample-app
+      app: springboot-sample
   replicas: 0
   strategy:
     type: RollingUpdate
@@ -17,10 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        app: sample-app
+        app: springboot-sample
     spec:
       containers:
-      - name: sample-app
+      - name: springboot-sample
         image: pledo/springboot-sample:latest 
         ports:
         - name: app-port
