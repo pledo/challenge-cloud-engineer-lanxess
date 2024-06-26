@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: apps
+    server: https://sample-app.example.com
+  project: default
+  source:
+    kustomize:
+      namespace: apps
+    path: argocd/overlays/prod
+    repoURL: git@github.com:pledo/challenge-cloud-engineer-lanxess.git
+    targetRevision: main
+  syncPolicy:
+    syncOptions:
+    - ApplyOutOfSyncOnly=true
