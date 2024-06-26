@@ -22,5 +22,29 @@ Basic Documentation (README.md) and architecture diagram
 #### ToDo List:
 1. ~~Create the repository~~ https://github.com/pledo/challenge-cloud-engineer-lanxess.git
 
-2. Dockerize the given sample app
-3. Config the health check endpoing.
+2. ~~Run the given sample app locally with docker compose~~
+
+3. ~~Config the health check endpoing.~~
+```sh
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
+```
+
+4. Create application k8 manifests, using Kustomize to build the k8 objects.
+    - deployment.yaml
+    - service.yaml
+    - ingress.yaml
+    - hpa.yaml
+    - argocd-application-sample-app.yaml
+
