@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-sample
+  labels:
+    app: springboot-sample
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    spec:
+      containers:
+      - name: springboot-sample
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: 500m
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        env:
+        - name: POSTGRES_DB
+          value: example
+        - name: POSTGRES_USERNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret 
+              key: POSTGRES_PASSWORD

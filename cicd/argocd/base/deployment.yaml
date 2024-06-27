@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-sample
+  labels:
+    app: springboot-sample
+spec:
+  selector:
+    matchLabels:
+      app: springboot-sample
+  replicas: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: springboot-sample
+    spec:
+      containers:
+      - name: springboot-sample
+        image: pledo/springboot-sample:latest 
+        ports:
+        - name: app-port
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: POSTGRES_DB
+          value: 
+        - name: POSTGRES_USERNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: 
