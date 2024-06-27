@@ -13,7 +13,7 @@ spec:
       namespace: apps
     path: argocd/overlays/prod
     repoURL: git@github.com:pledo/challenge-cloud-engineer-lanxess.git
-    targetRevision: main
+    targetRevision: 'feat/repo-setup'
   syncPolicy:
     syncOptions:
     - ApplyOutOfSyncOnly=true
