@@ -43,7 +43,7 @@ jobs:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}
       
       - name: Check tags
-        run: ${{ steps.meta.outputs.tags }}
+        run: echo ${{ steps.meta.outputs.tags }}
 
       - name: Build and push Docker image
         id: push
