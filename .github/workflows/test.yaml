@@ -1,11 +1,14 @@
 name: test
 on:
   push:
-    branches: ['feat/repo-setup']
+    branches: ['feat/argocd-giops']
+permissions:
+  contents: write
 env:
-  DOCKER_REGISTRY: pledo
+  DOCKERHUB_REGISTRY: pledo
   IMAGE_NAME: springboot-sample
   ENVIRONMENT: test
+  ARGOCD_APPS_BRANCH: feat/argocd-giops
 
 jobs:
   build:
@@ -40,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}
       
       - name: Check tags
         run: echo ${{ steps.meta.outputs.tags }}
@@ -52,31 +55,24 @@ jobs:
           context: spring-postgres/backend/
           file: spring-postgres/backend/Dockerfile
           push: true
-          #tags: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.output.outputs.sha_short }}
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.output.outputs.sha_short }}
+          tags: ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.output.outputs.sha_short }}
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}
-
-      #- name: Generate artifact attestation
-      #  uses: actions/attest-build-provenance@v1
-      #  with:
-      #    subject-name: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME}}
-      #    subject-digest: ${{ steps.push.outputs.digest }}
-      #    push-to-registry: true
-
       
-      #- name: Login to Amazon ECR
-      #  id: login-ecr
-      #  uses: aws-actions/amazon-ecr-login@v2
-      #- name: Build, tag, and push docker image to Amazon ECR
-      #  env:
-      #    REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #    REPOSITORY: my-ecr-repo
-      #    IMAGE_TAG: ${{ github.sha }}
-      #  run: |
-      #    docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-      #    docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: Update changes in GitHub repository
+        if: steps.git-check.outputs.modified == 'true'
+        run:  |
+          echo -e "\n#### SHA: ${{ needs.build.outputs.sha-short }}"
+          cd cicd/argocd/overlays/${{ env.ENVIRONMENT }}
+          kustomize edit set image ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{needs.build.outputs.sha-short}}
+          cat kustomization.yaml
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add kustomization.yaml
+          git commit -m "bump ${{ env.ENVIRONMENT }} env image: ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{needs.build.outputs.sha-short}}"
+          git push
+
 
   #deploy:
   #  name: Deploy
@@ -86,17 +82,17 @@ jobs:
   #    - name: Listing files
   #      run: |
   #        echo -e "\n#### SHA: ${{ needs.build.outputs.sha-short }}"
-  #        cd argocd/overlays/${{ env.ENVIRONMENT }}
-  #        kustomize edit set image ${{ env.SERVER }}/${{ env.SERVICE }}:${{needs.build.outputs.sha-short}}
+  #        cd cicd/argocd/overlays/${{ env.ENVIRONMENT }}
+  #        kustomize edit set image ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{needs.build.outputs.sha-short}}
   #        cat kustomization.yaml
   #        git config --local user.email "github-actions@github.com"
   #        git config --local user.name "GitHub Actions"
   #        git add kustomization.yaml
-  #        git commit -m "bump ${{ env.ENVIRONMENT }} env image"
-  #    - name: Push changes
-  #      uses: ad-m/github-push-action@master
-  #      with:
-  #        ssh: true
-  #        branch: ${{ env.ARGOCD_APPS_BRANCH }}
-  #        directory: gitops
-  #        repository: compay/comments
+  #        git commit -m "bump ${{ env.ENVIRONMENT }} env image: ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{needs.build.outputs.sha-short}}"
+  #    #- name: Push changes
+  #    #  uses: ad-m/github-push-action@master
+  #    #  with:
+  #    #    ssh: true
+  #    #    branch: ${{ env.ARGOCD_APPS_BRANCH }}
+  #    #    directory: gitops
+  #    #    repository: compay/comments
