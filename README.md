@@ -35,7 +35,7 @@ IaC:
   - Helm
 
 
-![image] (docs/springboot-diagram-aws.png)  
+![Alt text](docs/springboot-diagram-aws.png "AWS Account Diagram")  
 
 ---
 > ### Improvements:
