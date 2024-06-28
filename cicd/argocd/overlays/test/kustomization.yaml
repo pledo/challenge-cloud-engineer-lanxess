@@ -18,4 +18,4 @@ patches:
 
 images:
 - name: pledo/springboot-sample
-  newTag: 78e5786
+  newTag: 55e6dc1
