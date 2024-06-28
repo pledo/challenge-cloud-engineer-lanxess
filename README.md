@@ -35,7 +35,7 @@ IaC:
   - Helm
 
 
-![image] (docs/springboot-diagram-aws.png)  
+![image] (https://github.com/pledo/challenge-cloud-engineer-lanxess/blob/feat/docs/docs/springboot-diagram-aws.png)  
 
 ---
 > ### Improvements:
