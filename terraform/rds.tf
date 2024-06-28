@@ -1,9 +1,9 @@
 locals {
-  name    = "pledo-test1-psql"
-  region  = "us-east-2"
+  name   = "pledo-test1-psql"
+  region = "us-east-2"
 
   #vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
     Name       = local.name
@@ -36,24 +36,24 @@ module "security_group" {
 }
 
 module "rds" {
-  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-rds.git?ref=3ba7984d024e035f7b604b1f96726e6bc527e80d"
-  
-  identifier = "pledo-test1"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-rds.git?ref=3ba7984d024e035f7b604b1f96726e6bc527e80d"
+
+  identifier           = "pledo-test1"
   engine               = "postgres"
   engine_version       = "14"
   family               = "postgres14" # DB parameter group
-  major_engine_version = "14"  
+  major_engine_version = "14"
 
 
-  instance_class = "db.t3.micro"
-  allocated_storage = 20
+  instance_class        = "db.t3.micro"
+  allocated_storage     = 20
   max_allocated_storage = 100
 
-  db_name     = "example"
+  db_name  = "example"
   username = "postgres"
   #password = "${var.postgres_password}"
 
-  port     = 5432
+  port = 5432
 
   manage_master_user_password_rotation              = true
   master_user_password_rotate_immediately           = false
@@ -63,19 +63,19 @@ module "rds" {
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
 
-  maintenance_window              = "Mon:00:00-Mon:03:00"
-  backup_window                   = "03:00-06:00"
+  maintenance_window = "Mon:00:00-Mon:03:00"
+  backup_window      = "03:00-06:00"
   #enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  create_cloudwatch_log_group     = false
+  create_cloudwatch_log_group = false
 
   backup_retention_period = 1
   skip_final_snapshot     = true
   deletion_protection     = false
 
 
-  performance_insights_enabled          = false
+  performance_insights_enabled = false
   #performance_insights_retention_period = 7
-  create_monitoring_role                = false
+  create_monitoring_role = false
   #monitoring_interval                   = 60
   #monitoring_role_name                  = "example-monitoring-role-name"
   #monitoring_role_use_name_prefix       = true

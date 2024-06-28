@@ -13,7 +13,7 @@ variable "cluster_name" {
 
 variable "postgres_password" {
   description = "RDS Postgresql password"
-  type	      = string
+  type        = string
   default     = ""
 }
 
@@ -27,6 +27,6 @@ variable "namespace" {
 }
 
 variable "kube-version" {
-  type = string
+  type    = string
   default = "36.2.0"
 }
