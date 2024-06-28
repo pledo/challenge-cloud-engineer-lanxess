@@ -1,78 +1,77 @@
-Setup:
-1. Create a new repository using any public VCS for hosting the IaC code
+### Run a springboot API using Terraform for IaC and Kubernetes as application platform.
 
-2. Use the sample spring boot app from [here](https://github.com/docker/awesome-compose/tree/master/spring-postgres)
+---
 
-3. Please expose liveness health endpoints for this app while deploying using configs [here] (https://www.baeldung.com/spring-liveness-readiness-probes)
+## Architecture Diagram:
 
-Guidelines:
+- Cloud provider: AWS
+- Network: VPC
+  - Subnets: 
+    - Public: Ingress Controller and other future public solutions
+    - Private: Kubernetes nodes groups 
+    - DataBase:  RDS and some data solutions
+    - Intra: Control Plane and other sensitive applicatinos.
 
-1. Use Infrastructure as Code (IaC), preferably Terraform, to provision the necessary Azure or AWS components and set up a database. The implementation does not need to be deployed, but should be designed for testing purposes.
+- EKS:
+  - Addons: Kube-proxy, CoreDNS, VPC CNI, EBS CSI
+  - ALB Ingress Controller: Easy AWS services integrations: WAF, SSL ...
+  - AWS Secrets Manager integration: EBS CSI, External Secrets Operator
+  - Karpenter: Nodes scaling
+  - HPA: Pods Horizontal AutoScaling
+  - Linkerd2: ServiceMesh
 
-2. Use any GitOps framework to deploy the application.
+- Monitoring and Logs:
+  - Grafana Loki: Logs management
+  - Prometheus: Metrics 
+  - Grafana: Visualization
+  - Linkerd2Viz: ServiceMesh visualization stack.
 
-3. You can think about all possible solutions that support the (scalability, resiliency and security) of the system.
+- CI/CD:
+  - CD - GitOps: ArgoCD
+  - CI: Github Actions
 
-4. Add basic logging/monitoring capabilities
-Basic Documentation (README.md) and architecture diagram
+IaC:
+  - Terraform
+  - Helm
 
-5. Commit often, it's good to see small commits that build up to the result of your test, instead of one final commit with all the code.
+
+![image] (docs/springboot-diagram-aws.png)  
+
+---
+> ### Improvements:
+>
+>- **Availability:**
+>   - pod budget disruption to mitigate involuntary disruptions
+>   - HPA by default: Pods scaling, ensure elasticity based on cpu, mem, latency and rps at least.
+>    - Keda: Use custom metrics.
+>   - Karpenter: Nodes scaling
 
 
-#### ToDo List:
-1. ~~Create the repository~~ https://github.com/pledo/challenge-cloud-engineer-lanxess.git
+>**Security:**
+> 
+>>**- K8:**
+>    - Network policies
+>    - Kube-Bench*:  Check deployments configuration
+>    - Checkob: static code analysis tool
+>    - kube-hunter: Searchs for security gaps on K8 clusters
+>    - Kyverno: Policy management and enforcement
+>    - RBAC, user access management
+>    - Secrets Management: Install External Secrets Operator
 
-2. ~~Run the given sample app locally with docker compose~~
+>>  **Network:**
+>    - VPN
+>    - WAF
 
-3. ~~Config the health check endpoing.~~
-```sh
-livenessProbe:
-  httpGet:
-    path: /
-    port: 8080
-    initialDelaySeconds: 3
-    periodSeconds: 3
 
-readinessProbe:
-  httpGet:
-    path: /
-    port: 8080
-    initialDelaySeconds: 3
-    periodSeconds: 3
-```
-4. ~~Create application k8 manifests, using Kustomize to build the k8 objects.~~
-    - ~~deployment.yaml~~
-    - ~~service.yaml~~
-    - ~~ingress.yaml~~
-    - ~~hpa.yaml~~
-    - ~~argocd-application-sample-app.yaml~~
-5. ~~Create ArgoCD application structure: application file~~
-6. ~~Create DockerHub repo~~
-7. ~~Run K8 manifests locally with Minikubels~~
-8. ~~Configure github actions file: build~~
-9. ~~Confirgure GHA: deploy job~~
-10. ~~Configure ArgoCD server locally, validate the cicd flow~~
-11. ~~Create VPC structure~~
-12. ~~Create EKS cluster: With addons kube-proxy, coredns, vpc cni, ebs csi, *external secrets~~
-13. Configure ALB ingress controller~~
-14. ~~Prometheus + Grafana + Grafana Loki (Logs)~~
-15. ~~ArgoCD~~
-16. *Linkerd2, Linkerd2Viz
-17. *Karpenter: Nodes scaling, Fargate
-18. HPA with latency and rps metrics
+>>  **CI/CD: SAST, DAST:**
 
-```sh
-* nice to have
-```
+>>- **AWS: SSL Certificate**
+>>- **SSL Certificate: CertManager + Let'sEncrypt**
 
-### Improvements:
+> **GitOps - ArgoCD:** 
+>  - Ingress
+>  - SSL configuration
+>  - Vault/SecretsManager for ArgoCD Password
 
-- AWS: SSL Certificate
-- SSL Certificate: CertManager + Let'sEncrypt
-- Secrets Management: Install External Secrets Operator
-- ArgoCD: 
-  - Ingress
-  - SSL configuration
-  - Vault/SecretsManager for ArgoCD Password
-
-- Linkerd2 + LinkerdViz via Terraform (Helm provider)
+> **ServiceMesh:**
+>> Linkerd2 + LinkerdViz via Terraform (Helm provider)
