@@ -13,7 +13,7 @@ spec:
       namespace: apps
     path: cicd/argocd/overlays/test
     repoURL: git@github.com:pledo/challenge-cloud-engineer-lanxess.git
-    targetRevision: 'feat/argocd-giops'
+    targetRevision: 'develop'
   syncPolicy:
     syncOptions:
     - ApplyOutOfSyncOnly=true
