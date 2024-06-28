@@ -50,13 +50,13 @@ readinessProbe:
 6. ~~Create DockerHub repo~~
 7. ~~Run K8 manifests locally with Minikubels~~
 8. ~~Configure github actions file: build~~
-9. Confirgure GHA: deploy job
-10. Configure ArgoCD server locally, validate the cicd flow
+9. ~~Confirgure GHA: deploy job~~
+10. ~~Configure ArgoCD server locally, validate the cicd flow~~
 11. Create VPC structure
 12. Create EKS cluster: With addons kube-proxy, coredns, vpc cni, ebs csi, *external secrets
 13. Configure ALB ingress controller
-14. Prometheus + Grafana
-15. ArgoCD
+14. Prometheus + Grafana + Grafana Loki (Logs)
+15. ~~ArgoCD~~
 16. *Linkerd2, Linkerd2Viz
 17. *Karpenter: Nodes scaling, Fargate
 18. HPA with latency and rps metrics
@@ -64,3 +64,15 @@ readinessProbe:
 ```sh
 * nice to have
 ```
+
+### Improvements:
+
+- AWS: SSL Certificate
+- SSL Certificate: CertManager + Let'sEncrypt
+- Secrets Management: Install External Secrets Operator
+- ArgoCD: 
+  - Ingress
+  - SSL configuration
+  - Vault/SecretsManager for ArgoCD Password
+
+- Linkerd2 + LinkerdViz via Terraform (Helm provider)

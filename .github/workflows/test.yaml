@@ -59,18 +59,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}
-      
-      #- name: Update changes in GitHub repository
-      #  run:  |
-      #    echo -e "\n#### SHA: ${{ steps.output.outputs.sha_short }}"
-      #    cd cicd/argocd/overlays/${{ env.ENVIRONMENT }}
-      #    kustomize edit set image ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.output.outputs.sha_short }}
-      #    cat kustomization.yaml
-      #    git config --local user.email "github-actions@github.com"
-      #    git config --local user.name "GitHub Actions"
-      #    git add kustomization.yaml
-      #    git commit -m "bump ${{ env.ENVIRONMENT }} env image: ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.output.outputs.sha_short }}"
-      #    git push
 
   deploy:
     name: Deploy
