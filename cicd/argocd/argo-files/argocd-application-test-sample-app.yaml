@@ -5,15 +5,15 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: apps
+    namespace: test-apps
     server: https://kubernetes.default.svc
   project: default
   source:
-    kustomize:
-      namespace: apps
     path: cicd/argocd/overlays/test
     repoURL: git@github.com:pledo/challenge-cloud-engineer-lanxess.git
     targetRevision: 'feat/argocd-giops'
   syncPolicy:
+    automated:
+      selfHeal: true
     syncOptions:
-    - ApplyOutOfSyncOnly=true
+      - ApplyOutOfSyncOnly=true

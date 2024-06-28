@@ -4,7 +4,7 @@ metadata:
   name: springboot-sample
 spec:
   rules:
-  - host: springboot-sample.example.com
+  - host: test-springboot-sample.example.com
     http:
       paths:
       - path: /
