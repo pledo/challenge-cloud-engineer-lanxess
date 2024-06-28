@@ -1,7 +1,7 @@
 name: test
 on:
   push:
-    branches: ['feat/argocd-giops']
+    branches: ['develop']
 permissions:
   contents: write
 env:

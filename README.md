@@ -52,10 +52,10 @@ readinessProbe:
 8. ~~Configure github actions file: build~~
 9. ~~Confirgure GHA: deploy job~~
 10. ~~Configure ArgoCD server locally, validate the cicd flow~~
-11. Create VPC structure
-12. Create EKS cluster: With addons kube-proxy, coredns, vpc cni, ebs csi, *external secrets
-13. Configure ALB ingress controller
-14. Prometheus + Grafana + Grafana Loki (Logs)
+11. ~~Create VPC structure~~
+12. ~~Create EKS cluster: With addons kube-proxy, coredns, vpc cni, ebs csi, *external secrets~~
+13. Configure ALB ingress controller~~
+14. ~~Prometheus + Grafana + Grafana Loki (Logs)~~
 15. ~~ArgoCD~~
 16. *Linkerd2, Linkerd2Viz
 17. *Karpenter: Nodes scaling, Fargate
